@@ -7,6 +7,8 @@
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	// TODO protect against empty patrol routes
+
 	// Get the patrol points
 	auto AIController = OwnerComp.GetAIOwner();
 	auto ControlledPawn = AIController->GetPawn();
@@ -18,8 +20,9 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& Own
 	auto Index = BlackboardComp->GetValueAsInt(IndexKey.SelectedKeyName);
 	BlackboardComp->SetValueAsObject(WaypointKey.SelectedKeyName, PatrolPoints[Index]);
 
-	// TODO protect against empty patrol routes
-
+	// Cycle the index
+	auto NextIndex = (Index + 1) % PatrolPoints.Num();
+	BlackboardComp->SetValueAsInt(IndexKey.SelectedKeyName, NextIndex);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Waypoint index: %i"), Index);
 
