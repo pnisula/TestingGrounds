@@ -83,8 +83,7 @@ void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 }
 void AMannequin::UnPossessed()
 {
-	Super::UnPossessed();
-	UE_LOG(LogTemp, Warning, TEXT("Missing Gun Blueprint"));
+	Super::UnPossessed();	
 	if (Gun != nullptr)
 	{
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));

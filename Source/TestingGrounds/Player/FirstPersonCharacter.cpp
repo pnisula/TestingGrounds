@@ -61,12 +61,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 void AFirstPersonCharacter::BeginPlay()
 {
 	// Call the base class  
-	Super::BeginPlay();
-	if (GunBlueprint == NULL)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Missing Gun Blueprint"));
-		return;
-	}	
+	Super::BeginPlay();	
 }
 
 //////////////////////////////////////////////////////////////////////////
