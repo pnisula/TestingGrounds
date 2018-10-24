@@ -24,6 +24,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn);
+	void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn = 1, int MaxSpawn = 1, float Radius = 500);
 	
+private:
+	UFUNCTION()
+	bool CanSpawnAtLocation(FVector Location, float Radius);
+
+	UFUNCTION()
+	bool FindEmptyLocation(FVector& OutLocation, float Radius);
+	
+	UFUNCTION()
+	void PlaceActor(TSubclassOf<AActor> ToSpawn, FVector SpawnPoint, float Rotation);
 };
