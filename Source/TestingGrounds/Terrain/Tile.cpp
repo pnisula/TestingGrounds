@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "WorldCollision.h"
 #include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
 
 #define MAX_ATTEMPTS 100
 // Sets default values
@@ -81,7 +82,7 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();		
 }
 
 // Called every frame
