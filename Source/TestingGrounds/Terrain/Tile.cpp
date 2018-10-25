@@ -4,6 +4,7 @@
 #include "WorldCollision.h"
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
+#include "ActorPool.h"
 
 #define MAX_ATTEMPTS 100
 // Sets default values
@@ -12,6 +13,13 @@ ATile::ATile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+}
+void ATile::SetPool(UActorPool* InPool)
+{
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Settting Pool %s"), *(this->GetName()), *(InPool->GetName()));
+	Pool = InPool;	
+
+	PositionNavMeshBoundsVolume();
 }
 void ATile::PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
 {	
@@ -78,11 +86,28 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 	
 	return !HasHit;
 }
+void ATile::PositionNavMeshBoundsVolume()
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (NavMeshBoundsVolume == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not enough actors in pool."));
+		return;
+	}
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());	
+}
 
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();		
+}
+
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	
+	Pool->Return(NavMeshBoundsVolume);
 }
 
 // Called every frame
